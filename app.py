@@ -67,12 +67,11 @@ def fetch_and_filter_rss():
         for item in rei_notion_items:
             xml_lines.append('<item>')
             
-            # タイトル（改行を含む）
+            # タイトル（URLのみ）
             link_elem = item.find('link')
             if link_elem is not None and link_elem.text:
-                # タイトルは、改行を含む
-                title_text = f'🆕新しい記事がUPされました!\n{escape_xml(link_elem.text)}'
-                xml_lines.append(f'<title>{title_text}</title>')
+                # タイトルはURLのみ
+                xml_lines.append(f'<title>{escape_xml(link_elem.text)}</title>')
                 # 説明は空
                 xml_lines.append('<description></description>')
                 # リンク
