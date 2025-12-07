@@ -55,9 +55,7 @@ def fetch_and_filter_rss():
         ]
         
         # チャンネル情報を追加
-        title = channel.find('title')
-        if title is not None and title.text:
-            xml_lines.append(f'<title>{escape_xml(title.text)} - Rei丨暮らしとNotion。</title>')
+        xml_lines.append('<title>🆕ライフハッカーで新しい記事がUPされました！</title>')
         
         xml_lines.append('<description>Rei丨暮らしとNotion。の記事のみを配信します。</description>')
         xml_lines.append('<link>https://www.lifehacker.jp/author/rei_notion/</link>')
