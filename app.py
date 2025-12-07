@@ -63,30 +63,35 @@ def fetch_and_filter_rss():
         xml_lines.append('<atom:link href="https://www.lifehacker.jp/feed/author/rei_notion/index.xml" rel="self" type="application/rss+xml" />')
         xml_lines.append('<language>ja</language>')
         
-        # 記事を追加（URLのみを含める）
+        # 記事を追加
         for item in rei_notion_items:
             xml_lines.append('<item>')
             
-            # タイトル（URLのみ）
+            # タイトル（記事のタイトル）
+            title_elem = item.find('title')
+            if title_elem is not None and title_elem.text:
+                xml_lines.append(f'<title>{escape_xml(title_elem.text)}</title>')
+            
+            # 説明（記事の説明）
+            desc_elem = item.find('description')
+            if desc_elem is not None and desc_elem.text:
+                xml_lines.append(f'<description>{escape_xml(desc_elem.text)}</description>')
+            
+            # リンク
             link_elem = item.find('link')
             if link_elem is not None and link_elem.text:
-                # タイトルはURLのみ
-                xml_lines.append(f'<title>{escape_xml(link_elem.text)}</title>')
-                # 説明は空
-                xml_lines.append('<description></description>')
-                # リンク
                 xml_lines.append(f'<link>{escape_xml(link_elem.text)}</link>')
-                
-                # GUID
-                guid_elem = item.find('guid')
-                if guid_elem is not None and guid_elem.text:
-                    is_perma = guid_elem.get('isPermaLink', 'true')
-                    xml_lines.append(f'<guid isPermaLink="{is_perma}">{escape_xml(guid_elem.text)}</guid>')
-                
-                # 公開日
-                pubdate_elem = item.find('pubDate')
-                if pubdate_elem is not None and pubdate_elem.text:
-                    xml_lines.append(f'<pubDate>{escape_xml(pubdate_elem.text)}</pubDate>')
+            
+            # GUID
+            guid_elem = item.find('guid')
+            if guid_elem is not None and guid_elem.text:
+                is_perma = guid_elem.get('isPermaLink', 'true')
+                xml_lines.append(f'<guid isPermaLink="{is_perma}">{escape_xml(guid_elem.text)}</guid>')
+            
+            # 公開日
+            pubdate_elem = item.find('pubDate')
+            if pubdate_elem is not None and pubdate_elem.text:
+                xml_lines.append(f'<pubDate>{escape_xml(pubdate_elem.text)}</pubDate>')
             
             xml_lines.append('</item>')
         
