@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: rei-notion-rss-feed
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python rss_server_v2.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
